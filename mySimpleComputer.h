@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <cstdio>
 #include <time.h>
-#include "mySimpleComputer.h"
 #define 1 flag_overflow
 #define 2 flag_0
 #define 3 flag_memoryBorder
@@ -26,6 +25,8 @@ int sc_memoryInit( void ){
 			memory[i] = 0;
 
 	}
+
+	return 0;
 
 }
 
@@ -72,7 +73,7 @@ int sc_memorySave ( char* filename) {
 	if (wrtFile == NULL)
   	{
     
-    	fputs("Error: file does not openned" , stderr);
+    	cout << "Error: file does not openned" << endl;
       	return 1;
   	
   	}
@@ -90,7 +91,7 @@ int sc_memoryLoad ( char* filename ){
 	if (rdFile == NULL)
   	{
     	
-    	fputs("Error: file does not openned" , stderr);
+    	cout << "Error: file does not openned" << endl;;
       	return 1;
 
   	}
@@ -115,14 +116,21 @@ int sc_regInit ( void )
 
 int sc_regSet ( int register , bool value )
 {
+	
 	if ((register < 1) || (register > 5))
 		{
-			cout « "This register does not exist";
+
+			cout << "This register does not exist";
+
 		}
+
  	else
 	{
+
 		register = value;
+
 	}
+
 }
 
 int sc_commandEncode ( int command , int operand , int* value ){ // we neeed to check operand and command and write function for checking it
@@ -146,8 +154,11 @@ int sc_commandDecode ( int* value , int* command, int* operand ){ // we neeed to
 void codeDecToBin ( int dec, int* bin, int i , int j){
 
 	if( i >= j ) {
+		
 		codeDecToBin( dec / 2 , bin , i-1, j );
+
 	}
+	
 	bin[i] = dec % 2;
 
 }
