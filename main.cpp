@@ -1,9 +1,5 @@
-#include <iostream>
-#include <math.h>
-#include <stdlib.h>
-#include <cstdio>
-#include <time.h>
-#include "mySimpleComputer.h"
+
+#include "mySimpleComputer.hpp"
 
 int main( void ){
 
