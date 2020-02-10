@@ -16,10 +16,10 @@ int main( void ){
 	char name[10];
 
 	srand(time(NULL));
+	
+	k = sc_memoryInit();
 
-	sc_memoryInit();
-
-	cout << " memoryInit = " << sc_memoryInit() << endl;
+	cout << " memoryInit = " << k << endl;
 
 	for ( i = 0 ; i < 100 ; i++ ){
 
@@ -44,11 +44,11 @@ int main( void ){
 
 	cin >> j;
 
-	k = sc_memorySet( 2 , j)
+	k = sc_memorySet( 2 , j );
 
 	cout << "memorySet " << k << " " << memory[2] << endl;
 
-	k = sc_memoryGet( 5 , j );
+	k = sc_memoryGet( 5 , &j );
 
 	cout << "memoryGet " << k << " " << memory[5] << " " << j << endl;
 
@@ -84,7 +84,7 @@ int main( void ){
 
 	}
 
-	k = sc_memoryEncode(33 , 59, command);
+	k = sc_commandEncode(33 , 59, command);
 
 	cout << "memoryEncode " << k << endl;
 
@@ -94,7 +94,7 @@ int main( void ){
 
 	}
 	
-	k = sc_memoryDecode( command , j , i);
+	k = sc_commandDecode( command , &j , &i);
 
 	cout << "memoryDecode " << k << " " <<j << " " << i << endl;
 
