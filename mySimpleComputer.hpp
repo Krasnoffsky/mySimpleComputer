@@ -194,27 +194,43 @@ int sc_commandDecode ( int value[] , int* command, int* operand ){ // we neeed t
 
 	
 	
-	int hex = 0;
+	int hex = 0, hex1= 0;
 	int k = 1;
 
 	for ( int i = 0 ; i < 7 ; i++ , k++ ){
 
-			hex += value[k] * pow( 16 , i );
+			hex += value[k] * pow( 2 , i );
+
+			cout << hex <<" ";
 
 	}
+
+	do {
+
+		hex1 += hex % 16;
+
+	} while (hex % 16 != 0);
 	
-	*command = hex;
+	*command = hex1;
 	
 	k= 8;
 	hex = 0;
 
 	for ( int i = 0 ; i < 7 ; i++ , k++ ){
 
-			hex += value[k] * pow( 16 , i );
+			hex += value[k] * pow( 2 , i );
 
 	}
+
+	hex1 = 0;
+
+	do {
+
+		hex1 += hex % 16;
+
+	} while (hex % 16 != 0);
 	
-	*operand = hex;
+	*operand = hex1;
 	return 0;
 
 }

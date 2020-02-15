@@ -29,11 +29,20 @@ int main( void ){
 
 	}
 
+	cout << endl;
+
 	for ( i = 0 ; i < 15 ; i++ ){
 
 		cin >> command[i];
 
+		cout << i << " ";
+
 	}
+
+	cout << endl;
+
+	j = 0;
+	i = 0;
 	
 	k = sc_commandDecode( command , &j , &i);
 
