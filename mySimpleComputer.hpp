@@ -164,7 +164,7 @@ int sc_regGet (int regist, int &value)
 
 void codeDecToBin ( int dec , int bin[] , int i , int j ){
 
-	if( i >= j ) {
+	if( i > j ) {
 		
 		codeDecToBin( dec / 2 , bin , i-1, j );
 
@@ -205,11 +205,23 @@ int sc_commandDecode ( int value[] , int* command, int* operand ){ // we neeed t
 
 	}
 
+	hex /= 2;
+
+	int i = 0;
+
+	cout << "<-<-<-<Cycle starts here>->->->" << endl;
+
 	do {
 
-		hex1 += hex % 16;
+		hex1 += hex % 16 * pow ( 10 , i );
+
+		i++;
+
+		hex /= 16;
 
 	} while (hex % 16 != 0);
+
+	cout << "<-<-<-<Cycle ends here>->->->" << endl;
 	
 	*command = hex1;
 	
@@ -220,17 +232,67 @@ int sc_commandDecode ( int value[] , int* command, int* operand ){ // we neeed t
 
 			hex += value[k] * pow( 2 , i );
 
+			cout << hex <<" ";
+
 	}
 
 	hex1 = 0;
 
+	//hex /= 2;
+
+	cout << "<-<-<-<Cycle 2 starts here>->->->" << endl;	
+
+	i = 0;
+
 	do {
 
-		hex1 += hex % 16;
+		hex1 += hex % 16 * pow ( 10 , i );
+
+		i++;
+
+		hex /= 16;
 
 	} while (hex % 16 != 0);
+
+	cout << "<-<-<-<Cycle 2 ends here>->->->" << endl;
 	
 	*operand = hex1;
+	return 0;
+
+}
+
+int sc_commandDecode_demo ( int value[] , int* command){ // we neeed to check operand and command and write function for checking it
+	
+	int hex = 0, hex1= 0;
+	int k = 8;
+
+	for ( int i = 0 ; i < 7 ; i++ , k++ ){
+
+			hex += value[k] * pow( 2 , i );
+
+			cout << "Hex = "<< hex << endl << "i = " << i << endl;
+
+	}
+
+
+	int i = 0;
+
+	cout << "<-<-<-<Cycle starts here>->->->" << endl;
+
+	do {
+
+		hex1 += hex % 16 * pow ( 10 , i );
+
+		i++;
+
+		hex /= 16;
+
+	} while (hex % 16 != 0);
+
+	cout << "<-<-<-<Cycle ends here>->->->" << endl;
+	
+	*command = hex1;
+
 	return 0;
 
 }

@@ -33,20 +33,23 @@ int main( void ){
 
 	for ( i = 0 ; i < 15 ; i++ ){
 
-		cin >> command[i];
-
 		cout << i << " ";
+
+		cin >> command[i];
 
 	}
 
 	cout << endl;
 
 	j = 0;
-	i = 0;
-	
-	k = sc_commandDecode( command , &j , &i);
 
-	cout << "memoryDecode " << k << " " <<j << " " << i << endl;
+	i = 0;
+
+	// cout << "<-<-<-<-<Error must be here>->->->->" << endl;
+	
+	k = sc_commandDecode_demo( command , &j);
+
+	cout << "memoryDecode " << k << " " << j << endl;
 
 	return 0;
 
