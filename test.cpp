@@ -7,6 +7,8 @@ int main( void ){
 
 	int command[15];
 
+	command[0] = 0;
+
 	int value = 0;
 
 	int i , j , k , s;
@@ -47,9 +49,9 @@ int main( void ){
 
 	// cout << "<-<-<-<-<Error must be here>->->->->" << endl;
 	
-	k = sc_commandDecode_demo( command , &j);
+	k = sc_commandDecode( command , &j, &i);
 
-	cout << "memoryDecode " << k << " " << j << endl;
+	cout << "memoryDecode " << k << " " << j << " " << i << endl;
 
 	return 0;
 

@@ -99,7 +99,7 @@ int sc_memoryLoad ( char* filename ){
 
   	}
 
-	fread( memory , 100 , sizeof(*memory) , rdFile ); //this "function" can be wrong. i it doesn't equate to count of size_t type
+	fread( memory , 100 , sizeof(*memory) , rdFile );
 	fclose( rdFile );
 	return 0;
 
@@ -180,119 +180,98 @@ int codeHexToDec ( int hex){
 
 }
 
-int sc_commandEncode ( int command , int operand , int* value ){ // we neeed to check operand and command and write function for checking it
+int sc_commandEncode ( int command , int operand , int* value ){ 
 
-	int dec = codeHexToDec(command);
-	codeDecToBin( dec , value, 7 , 1 );
-	dec = codeHexToDec(operand);
-	codeDecToBin( dec , value , 14 , 8 );
-	return 0;
+	int i = 0;
+
+if ((command == 10) || (command == 11) || (command == 20) || (command == 21) || ((command >= 30) && (command <= 33)) || ((command >= 40) && (command <= 43)) || ((command >= 51) && (command <= 76)))
+
+
+	{
+
+		int dec = codeHexToDec(command);
+		codeDecToBin( dec , value, 7 , 1 );
+		dec = codeHexToDec(operand);
+		codeDecToBin( dec , value , 14 , 8 );
+		return 0;
+
+	} else {
+
+		cout << "Error 1:Command doesn't exist" << endl;
+
+		return 1;
+
+	}
+
+
+	
 
 }
 
-int sc_commandDecode ( int value[] , int* command, int* operand ){ // we neeed to check operand and command and write function for checking it
+int sc_commandDecode ( int value[] , int* command, int* operand ){ 
 
 	
 	
 	int hex = 0, hex1= 0;
 	int k = 1;
+	int i = 0;
 
-	for ( int i = 0 ; i < 7 ; i++ , k++ ){
+	for ( i = 6 ; i >=0 ; i-- , k++ ){
 
 			hex += value[k] * pow( 2 , i );
 
-			cout << hex <<" ";
-
 	}
 
-	hex /= 2;
-
-	int i = 0;
-
-	cout << "<-<-<-<Cycle starts here>->->->" << endl;
+	int s = 0;
 
 	do {
 
-		hex1 += hex % 16 * pow ( 10 , i );
+		hex1 += hex % 16 * pow ( 10 , s );
 
-		i++;
+		s++;
 
 		hex /= 16;
 
 	} while (hex % 16 != 0);
 
-	cout << "<-<-<-<Cycle ends here>->->->" << endl;
+	if ((hex1 == 10) || (hex1 == 11) || (hex1 == 20) || (hex1 == 21) || ((hex1 >= 30) && (hex1 <= 33)) || ((hex1 >= 40) && (hex1 <= 43)) || ((hex1 >= 51) && (hex1 <= 76)))
+
+	{
+		
+		*command = hex1;
 	
-	*command = hex1;
+	} else {
+
+		cout << "Error 1:Command doesn't exist" << endl;
+
+		return 1;
+
+	}	
 	
 	k= 8;
 	hex = 0;
-
-	for ( int i = 0 ; i < 7 ; i++ , k++ ){
+	for ( i = 6 ; i >=0 ; i-- , k++ ){
 
 			hex += value[k] * pow( 2 , i );
 
-			cout << hex <<" ";
-
 	}
 
-	hex1 = 0;
+	hex1 = 0;	
 
-	//hex /= 2;
-
-	cout << "<-<-<-<Cycle 2 starts here>->->->" << endl;	
-
-	i = 0;
+	s = 0;
 
 	do {
 
-		hex1 += hex % 16 * pow ( 10 , i );
+		hex1 += hex % 16 * pow ( 10 , s );
 
-		i++;
+		s++;
 
 		hex /= 16;
 
 	} while (hex % 16 != 0);
 
-	cout << "<-<-<-<Cycle 2 ends here>->->->" << endl;
-	
 	*operand = hex1;
 	return 0;
 
 }
 
-int sc_commandDecode_demo ( int value[] , int* command){ // we neeed to check operand and command and write function for checking it
-	
-	int hex = 0, hex1= 0;
-	int k = 8;
-
-	for ( int i = 0 ; i < 7 ; i++ , k++ ){
-
-			hex += value[k] * pow( 2 , i );
-
-			cout << "Hex = "<< hex << endl << "i = " << i << endl;
-
-	}
-
-
-	int i = 0;
-
-	cout << "<-<-<-<Cycle starts here>->->->" << endl;
-
-	do {
-
-		hex1 += hex % 16 * pow ( 10 , i );
-
-		i++;
-
-		hex /= 16;
-
-	} while (hex % 16 != 0);
-
-	cout << "<-<-<-<Cycle ends here>->->->" << endl;
-	
-	*command = hex1;
-
-	return 0;
-
-}
