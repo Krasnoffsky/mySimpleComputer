@@ -7,9 +7,15 @@ int main( void ){
 
 	int value = 0;
 
-	int i , j , k;
+	int i, j, k, s;
 
 	char name[10];
+
+	for ( i = 0 ; i < 15 ; i++ ){
+
+		command[i] = 0;
+
+	}
 
 	srand(time(NULL));
 	
@@ -38,15 +44,27 @@ int main( void ){
 
 	}
 
+	cout << "Input number ";
+
 	cin >> j;
 
-	k = sc_memorySet( 2 , j );
+	cout << "Input what element you want to change ";
 
-	cout << "memorySet " << k << " " << memory[2] << endl;
+	cin >> s;
 
-	k = sc_memoryGet( 5 , &j );
+	k = sc_memorySet( s , j );
 
-	cout << "memoryGet " << k << " " << memory[5] << " " << j << endl;
+	cout << "memorySet " << k << " " << memory[s] << endl;
+
+	cout << "Input number of element, you want to save ";
+
+	cin >> s;
+
+	k = sc_memoryGet( s , &j );
+
+	cout << "memoryGet " << k << " Your wanted element: " << memory[s] << " Saved element :" << j << endl;
+
+	cout << "Input name of file (10 symbols)";
 
 	cin >> name;
 
@@ -74,11 +92,9 @@ int main( void ){
 
 	cout << " regSet " << k << " " << flag_0 << endl;
 
-	for ( i = 0 ; i < 15 ; i++ ){
+	cout << "Input numbers you want to encode ";
 
-		cin >> command[i];
-
-	}
+	cin >> j >> i;
 
 	k = sc_commandEncode(33 , 59, command);
 
@@ -87,6 +103,16 @@ int main( void ){
 	for ( i = 0 ; i < 15 ; i++ ){
 
 		cout << command[i];
+
+	}
+
+	cout << endl;
+
+	cout << "Input binary number you want to decode ";
+
+	for ( i = 0 ; i < 15 ; i++ ){
+
+		cin >> command[i];
 
 	}
 	
