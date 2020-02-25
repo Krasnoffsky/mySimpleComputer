@@ -1,58 +1,33 @@
-#include "mySimpleComputer.hpp"
+#include "myTerm.hpp"
 #include <iostream>
-
-using namespace std;
 
 int main( void ){
 
-	int command[15];
+	int r, c;
 
-	command[0] = 0;
-
-	int value = 0;
-
-	int i , j , k , s;
-
-	char name[10];
-
-	srand(time(NULL));
-	
-
-	cin >> j;
-	cin >> s;
-
-	k = sc_commandEncode(j , s, command);
-
-	cout << "memoryEncode " << k << endl;
-
-	for ( i = 0 ; i < 15 ; i++ ){
-
-		cout << command[i];
-
-	}
-
-	cout << endl;
-
-	for ( i = 0 ; i < 15 ; i++ ){
-
-		cout << i << " ";
-
-		cin >> command[i];
-
-	}
-
-	cout << endl;
-
-	j = 0;
-
-	i = 0;
-
-	// cout << "<-<-<-<-<Error must be here>->->->->" << endl;
-	
-	k = sc_commandDecode( command , &j, &i);
-
-	cout << "memoryDecode " << k << " " << j << " " << i << endl;
-
+	std::cout << "Start test" << endl;
+	std::cout << "Want to see a magic?" << endl;
+	getchar();
+	mt_setbgcolor(RED);
+	std::cout << "Look! It's red!" << endl;
+	mt_setfgcolor(GREEN);
+	std::cout << "Look! The background now green!" << endl;
+	std::cout << "Continue?" << endl;
+	getchar();
+	cursor_invisible();
+	std::cout << "Your cursor now invisible!" << endl;
+	getchar();
+	cursor_visible();
+	std::cout << "It became visible again" << endl;
+	std::cout << "Continue?" << endl;
+	mt_getscreensize(&r, &c);
+ 	std::cout << "Rows = " << r << endl << "Cols = "<< c << endl;
+ 	std::cout << "Now I'm gonna move your cursor" << endl;
+ 	mt_gotoXY (20, 20);
+ 	std::cout << "Done!" << endl;
+ 	std::cout << "Press something to clean screen and complete" << endl;
+ 	getchar();
+ 	mt_clrscr();
 	return 0;
 
 }
