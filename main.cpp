@@ -1,4 +1,3 @@
-
 #include "mySimpleComputer.hpp"
 
 int main( void ){
