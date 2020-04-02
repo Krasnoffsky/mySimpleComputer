@@ -14,6 +14,7 @@ const int flag_tactIgnore = 3;
 const int flag_wrongCommand = 4;
 
 bitset<5> bits(0x2);
+bitset<15> bits_command(0x2);
 
 int memory[100];
 
@@ -180,115 +181,45 @@ int sc_regGet (int regist)
 	else if (regist == 5) cout << endl << "flag_wrongCommand = " << bits.test(flag_wrongCommand) << endl;
 }
 
-void codeDecToBin ( int dec , int bin[] , int i , int j ){
-
-	if( i > j ) {
-		
-		codeDecToBin( dec / 2 , bin , i-1, j );
-
-	}
-	
-	bin[i] = dec % 2;
-
-}
-
-int codeHexToDec ( int hex){
-
-	return (hex  % 10) + (( hex - (hex % 10)) / 10 ) * 16;
-
-}
-
-int sc_commandEncode ( int command , int operand , int* value ){ 
-
-	int i = 0;
-
-if ((command == 10) || (command == 11) || (command == 20) || (command == 21) || ((command >= 30) && (command <= 33)) || ((command >= 40) && (command <= 43)) || ((command >= 51) && (command <= 76)))
-
-
+int sc_commandEncode (int command, int operand)
+{
+	if ((command == 10) || (command == 11) || (command == 20) || (command == 21) || ((command >= 30) && (command <= 33)) || ((command >= 40) && (command <= 43)) || ((command >= 51) && (command <= 76)))
 	{
-
-		int dec = codeHexToDec(command);
-		codeDecToBin( dec , value, 7 , 1 );
-		dec = codeHexToDec(operand);
-		codeDecToBin( dec , value , 14 , 8 );
+		bits_command <<= 15; //очищаем
+		bits_command.set(7);
+		
+		bitset<15> temp_bits_command(command);
+		bits_command ^= temp_bits_command;
+		bits_command <<= 7;
+		
+		bitset<15> temp_bits_operand(operand);
+		bits_command ^= temp_bits_operand;
+		
+		cout << bits_command;
+		
 		return 0;
-
-	} else {
-
-		cout << "Error 1:Command doesn't exist" << endl;
-
-		return 1;
-
 	}
-
-
 	
-
+	else
+	{
+		cout << "Error 1:Command doesn't exist" << endl;
+		return 1;
+	}
 }
 
-int sc_commandDecode ( int value[] , int* command, int* operand ){ 
-
+int sc_commandDecode (unsigned long int &command, unsigned long int &operand)
+{ 	
+	bitset<15> temp_bits_decode(0);
 	
+	bits_command <<= 1;
+	temp_bits_decode ^= bits_command;
+	bits_command >>= 8;
 	
-	int hex = 0, hex1= 0;
-	int k = 1;
-	int i = 0;
-
-	for ( i = 6 ; i >=0 ; i-- , k++ ){
-
-			hex += value[k] * pow( 2 , i );
-
-	}
-
-	int s = 0;
-
-	do {
-
-		hex1 += hex % 16 * pow ( 10 , s );
-
-		s++;
-
-		hex /= 16;
-
-	} while (hex % 16 != 0);
-
-	if ((hex1 == 10) || (hex1 == 11) || (hex1 == 20) || (hex1 == 21) || ((hex1 >= 30) && (hex1 <= 33)) || ((hex1 >= 40) && (hex1 <= 43)) || ((hex1 >= 51) && (hex1 <= 76)))
-
-	{
-		
-		*command = hex1;
+	temp_bits_decode <<= 7;
+	temp_bits_decode >>= 8;
 	
-	} else {
-
-		cout << "Error 1:Command doesn't exist" << endl;
-
-		return 1;
-
-	}	
+	command = bits_command.to_ulong();
+	operand = temp_bits_decode.to_ulong();
 	
-	k= 8;
-	hex = 0;
-	for ( i = 6 ; i >=0 ; i-- , k++ ){
-
-			hex += value[k] * pow( 2 , i );
-
-	}
-
-	hex1 = 0;	
-
-	s = 0;
-
-	do {
-
-		hex1 += hex % 16 * pow ( 10 , s );
-
-		s++;
-
-		hex /= 16;
-
-	} while (hex % 16 != 0);
-
-	*operand = hex1;
 	return 0;
-
 }
