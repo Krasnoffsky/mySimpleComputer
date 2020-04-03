@@ -1,67 +1,56 @@
-
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/ioctl.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <iostream>
+#include <termios.h>
+#include <sys/ioctl.h>
 
-using namespace std;
+enum {
+	BLACK = 0,
+	RED = 1,
+	GREEN = 2,
+	YELLOW = 3,
+	BLUE = 4,
+	MAG = 5,
+	CYAN = 6,
+	WHITE = 7
+};
 
-enum colorbash { RED = 1,
-				 GREEN = 2,
-				 YELLOW = 3,
-				 BLUE= 4,
-				 PURPLE = 5,
-				 AQUA = 6,
-				 WHITE = 7 };
-
-int mt_clrscr (void)
-{
-	cout << "\033[H\033[J" << endl; //+ перемещение курсора cursor_address
-	cout << "\033[%i0;0H" << endl;
+int mt_clrscr (void){
+	printf("\033[H\033[J");
 	return 0;
 }
 
-int mt_gotoXY (int x, int y)
-{	
-	cout << "\033[%i" << x << ";" << y << "H" << endl;	
+int mt_getscreensize (int * rows, int * cols){
+	struct winsize ws;
+	if (!ioctl(1, TIOCGWINSZ, &ws)){
+		*rows = ws.ws_row;
+		*cols = ws.ws_col;
+		return 0;
+	} else {
+		return -1;
+	}
 }
 
-int mt_getscreensize (int * rows, int * cols)
-{
-	struct winsize w;
-    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-    *rows = w.ws_row;
-    *cols = w.ws_col;
-    return 0;
+int mt_gotoXY (int x, int y){
+	int row;
+	int col;
+	mt_getscreensize(&col, &row);
+	if (((0 <= x) && ( x <= col))&&((0 <= y) && (y <= row)))
+	{
+		printf("\033[%d;%dH", x, y);
+		return 0;
+	}
+	else
+	{
+		return -1;
+	} 
 }
 
-int mt_setfgcolor (int colors)
-{
-	if ( 0 < colors < 8 )
-{
-	cout << "\033[4"<< colors << "m" << endl;
-}
-	else return 0;
+int mt_setfgcolor (int colors){
+	printf("\033[3%dm", colors);
+	return 0;
 }
 
-int mt_setbgcolor (int color)
-{
-	if ( 0 < color < 8 )
-{
-	cout << "\033[3"<< color << "m" << endl; //Тут я их не особо понимаю с цветом, надо тестить
-}
-	else return 0;
-}
-
-void cursor_invisible()
-{
-	cout << "\033[?25l\033[?1c" << endl;
-}
-
-void cursor_visible()
-{
-	cout << "\033[?25h\033[?8c" << endl;
+int mt_setbgcolor (int colors){
+	printf("\033[4%dm", colors);
+	return 0;
 }

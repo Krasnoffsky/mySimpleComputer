@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <time.h>
 #include <bitset>
+#define SIZE 100
 
 using namespace std;
 
@@ -16,7 +17,7 @@ const int flag_wrongCommand = 4;
 bitset<5> bits(0x2);
 bitset<15> bits_command(0x2);
 
-int memory[100];
+int memory[SIZE];
 
 void flag_set(int temp)
 {
