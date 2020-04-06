@@ -15,9 +15,10 @@ const int flag_tactIgnore = 3;
 const int flag_wrongCommand = 4;
 
 bitset<5> bits(0x2);
-bitset<15> bits_command(0x2);
 
-int memory[SIZE];
+unsigned long int memory[SIZE];
+int instructionCounter = 59;
+
 
 void flag_set(int temp)
 {
@@ -162,39 +163,30 @@ int sc_regSet ( int regist , bool value )
 
 int sc_regGet (int regist)
 {
-	if (regist < 0 || regist > 5)
+	if (regist < 1 || regist > 5)
 	{
 		cout << "This register does not exist";
 	}
 	
-	else if (regist == 0)
-	{
-		cout << endl << "flag_overflow = " << bits.test(flag_overflow) << endl;
-		cout << endl << "flag_0 = " << bits.test(flag_0) << endl;
-		cout << endl << "flag_memoryBorder = " << bits.test(flag_memoryBorder) << endl;
-		cout << endl << "flag_tactIgnore = " << bits.test(flag_tactIgnore) << endl;
-		cout << endl << "flag_wrongCommand = " << bits.test(flag_wrongCommand) << endl;
-	}
-	else if (regist == 1) cout << endl << "flag_overflow = " << bits.test(flag_overflow) << endl;
-	else if (regist == 2) cout << endl << "flag_0 = " << bits.test(flag_0) << endl;
-	else if (regist == 3) cout << endl << "flag_memoryBorder = " << bits.test(flag_memoryBorder) << endl;
-	else if (regist == 4) cout << endl << "flag_tactIgnore = " << bits.test(flag_tactIgnore) << endl;
-	else if (regist == 5) cout << endl << "flag_wrongCommand = " << bits.test(flag_wrongCommand) << endl;
+	else if (regist == 1) return bits.test(flag_overflow);
+	else if (regist == 2) return bits.test(flag_0);
+	else if (regist == 3) return bits.test(flag_memoryBorder);
+	else if (regist == 4) return bits.test(flag_tactIgnore);
+	else if (regist == 5) return bits.test(flag_wrongCommand);
 }
 
-int sc_commandEncode (int command, int operand)
+int sc_commandEncode (unsigned long int &value, int command, int operand)
 {
 	if ((command == 10) || (command == 11) || (command == 20) || (command == 21) || ((command >= 30) && (command <= 33)) || ((command >= 40) && (command <= 43)) || ((command >= 51) && (command <= 76)))
 	{
-		bits_command <<= 15; //очищаем
+		bitset<15> bits_command(command);
 		bits_command.set(7);
-		
-		bitset<15> temp_bits_command(command);
-		bits_command ^= temp_bits_command;
 		bits_command <<= 7;
 		
 		bitset<15> temp_bits_operand(operand);
 		bits_command ^= temp_bits_operand;
+		
+		value = bits_command.to_ulong();
 		
 		cout << bits_command;
 		
@@ -208,10 +200,10 @@ int sc_commandEncode (int command, int operand)
 	}
 }
 
-int sc_commandDecode (unsigned long int &command, unsigned long int &operand)
+int sc_commandDecode (unsigned long int value, unsigned long int &command, unsigned long int &operand)
 { 	
+	bitset<15> bits_command(value);
 	bitset<15> temp_bits_decode(0);
-	
 	bits_command <<= 1;
 	temp_bits_decode ^= bits_command;
 	bits_command >>= 8;

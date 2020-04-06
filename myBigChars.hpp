@@ -49,7 +49,7 @@ int bc_box(int x1, int y1, int x2, int y2){
 		return -1;
 }
 
-int bc_printbigchar (int mas[2], int x, int y, int fg, int bg){
+int bc_printbigchar (long int mas[2], int x, int y, int fg, int bg){
 	struct winsize ws;
 	if (!ioctl(1, TIOCGWINSZ, &ws)){
 		//printf(" +++ ");
@@ -59,7 +59,7 @@ int bc_printbigchar (int mas[2], int x, int y, int fg, int bg){
 			printf("\033[%d;%dH\033N\033[3%dm\033[4%dm", y, x, fg, bg);
 			int h = 0;
 			for (int i = 0; i < 2; i ++){
-				int bit = 31;
+				long int bit = 31;
 				for (int j = 0; j < 4; j ++){
 					for (int k = 0; k < 8; k ++){
 						if (((mas[i] >> bit) & 1) == 0){
