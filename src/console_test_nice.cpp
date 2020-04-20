@@ -3,6 +3,7 @@
 #include "myBigChars.hpp"
 #include "myReadkey.hpp"
 #include "add.h"
+#include <iostream>
 
 int input_x = 27;
 int input_y = 3;
@@ -12,6 +13,7 @@ int mpos_y = 56;
 
 int selected_pos = 0;
 int accumulator = 0;
+using namespace std;
 
 void print_selected()
 {
@@ -19,8 +21,8 @@ void print_selected()
         bc_printbigchar(bc_chars[MINUS], 3, 15, GREEN, BLACK);
     else
         bc_printbigchar(bc_chars[PLUS], 3, 15, GREEN, BLACK);
-    int comand_num, operand;  
-    sc_commandDecode(memory[selected_pos], &comand_num, &operand);
+    unsigned long int comand_num, operand;  
+    sc_commandDecode(memory[selected_pos], comand_num, operand);
    
     bc_printbigchar(bc_chars[(comand_num >> 4) & 7], 12, 15, GREEN, BLACK);
     bc_printbigchar(bc_chars[comand_num & 15], 21, 15, GREEN, BLACK);
@@ -57,17 +59,18 @@ int print_flags()
 
 int print_memory()
 {
-    bc_box(1, 2, 62, 13);
-    //1, 3, 55, 14
-    mt_gotoXY(2, 27);
-    printf("Memory");
+	mt_gotoXY(2, 27);
     int comand_num, operand;
     for (int i = 0; i < SIZE; i ++){
 		if (i % 10 == 0){
-			printf("\n   ");
+			printf("\n  ");
 		}
-		printf("+%d  ", memory[i]);
+		//printf("+%d  ", memory[i]);
+		cout << "+" << memory[i] << "  ";
 	}
+	bc_box(1, 2, 62, 13);
+	mt_gotoXY(2, 27);
+    printf("Memory");
 }
 
 int print_term()
@@ -127,11 +130,20 @@ int main(){
 	
 	mt_clrscr();
 	sc_regInit();
-	sc_memorySet(instructionCounter, 35675);
+	sc_memorySet(instructionCounter, 123);
 
 	sc_regSet(flag_memoryBorder, 1);
 	sc_regSet(flag_0, 1);
 	print_term();
+	while (true){
+
+		int key;
+		rk_readkey(&key);
+		if (key == 83) rk_mytermsave();
+		else if (key == 76) rk_mytermrestore();
+		else if (key == 27) break;
+
+	}
 	
 	
 	return 0;

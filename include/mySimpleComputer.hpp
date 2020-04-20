@@ -17,7 +17,7 @@ const int flag_wrongCommand = 4;
 bitset<5> bits(0x2);
 
 unsigned long int memory[SIZE];
-int instructionCounter = 59;
+int instructionCounter = 69;
 
 
 void flag_set(int temp)
@@ -140,7 +140,7 @@ int sc_regInit ( void )
 
 int sc_regSet ( int regist , bool value )
 {
-	if (regist < 1 || regist > 5)
+	if (regist < 0 || regist > 5)
 	{
 		cout << "This register does not exist";
 		return 1;
@@ -163,7 +163,7 @@ int sc_regSet ( int regist , bool value )
 
 int sc_regGet (int regist)
 {
-	if (regist < 1 || regist > 5)
+	if (regist < 0 || regist > 5)
 	{
 		cout << "This register does not exist";
 	}
