@@ -135,6 +135,8 @@ int main(){
 	sc_regSet(flag_memoryBorder, 1);
 	sc_regSet(flag_0, 1);
 	print_term();
+	//rk_mytermregime (0, 0, 1, 0, 1);
+	rk_mytermregime (1, 300, 15, 1, 1);
 	while (true){
 
 		int key;
